@@ -19,10 +19,11 @@
  *
  */
 
-#include <util-func.h>
 #include <string.h>
 #include <unistd.h>
 
+#include "db-util-common.h"
+#include "util-func.h"
 #include "db-util-debug.h"
 
 #define BUFSIZE		512
@@ -43,6 +44,11 @@ static int db_util_busyhandler(void *pData, int count)
 int db_util_open(const char *pszFilePath, sqlite3 **ppDB, int nOption)
 {
 	char *pszErrorMsg = NULL;
+
+	if((pszFilePath == NULL) || (ppDB == NULL)) {
+		DBUTIL_TRACE_WARNING("sqlite3 handle null error");
+		return -1;
+	}
 	
 	/* Save DB Path & Option */
 	strncpy(_szDBPath, pszFilePath, strlen(pszFilePath));
@@ -80,6 +86,11 @@ int db_util_open_with_options(const char *pszFilePath, sqlite3 **ppDB,
 				int flags, const char *zVfs)
 {
 	char *pszErrorMsg = NULL;
+
+	if((pszFilePath == NULL) || (ppDB == NULL)) {
+		DBUTIL_TRACE_WARNING("sqlite3 handle null error");
+		return -1;
+	}
 	
 	/* Save DB Path & Option */
 	strncpy(_szDBPath, pszFilePath, strlen(pszFilePath));

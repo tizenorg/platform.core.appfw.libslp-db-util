@@ -26,8 +26,6 @@
 extern "C" {
 #endif
 
-#include "collation.h"
-#include "convert.h"
 #include "util-func.h"
 
 #ifdef __cplusplus

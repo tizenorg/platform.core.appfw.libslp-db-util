@@ -26,7 +26,12 @@
 extern "C" {
 #endif
 
-#include <db-util-common.h>
+#include <stdio.h>
+#include <sqlite3.h>
+
+#ifndef EXPORT_API
+#define EXPORT_API __attribute__ ((visibility("default")))
+#endif
 
 #define DB_UTIL_REGISTER_HOOK_METHOD    0x00000001
 #define DB_UTIL_LUCENE_INDEX            0x00000002
@@ -42,10 +47,10 @@ extern "C" {
  * @{
  */
 EXPORT_API int db_util_open(const char *pszFilePath, sqlite3 **ppDB,
-				    int nOption);
+				int nOption);
 EXPORT_API int db_util_open_with_options(const char *pszFilePath,
-						 sqlite3 **ppDB, int flags,
-						 const char *zVfs);
+						sqlite3 **ppDB, int flags,
+						const char *zVfs);
 EXPORT_API int db_util_close(sqlite3 *ppDB);
 /**
 *@}

@@ -1,21 +1,18 @@
-
 Name:       libslp-db-util
 Summary:    DB Utility
 Version:    0.1.0
-Release:    2.1
+Release:    49
 Group:      TO_BE/FILLED_IN
-License:    TO BE FILLED IN
-Source0:    libslp-db-util-%{version}.tar.bz2
+License:    Apache License, Version 2.0
+Source0:    libslp-db-util-%{version}.tar.gz
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(sqlite3)
-
+BuildRequires:  pkgconfig(dlog)
 
 %description
 libslp-db-util-dev package
-
-
 
 %package devel
 Summary:    Devel package for libslp-db-util (devel)
@@ -24,16 +21,12 @@ Requires:   %{name} = %{version}-%{release}
 Requires:   pkgconfig(sqlite3)
 
 %description devel
-heynoti API (devel)
-
 
 %prep
 %setup -q -n %{name}-%{version}
 
-
 %build
 cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix}
-
 
 make %{?jobs:-j%jobs}
 
@@ -41,27 +34,26 @@ make %{?jobs:-j%jobs}
 rm -rf %{buildroot}
 %make_install
 
+if [ ! -d %{buildroot}/opt/dbspace ]; then
+        mkdir -p %{buildroot}/opt/dbspace
+fi
 
+%post
+/sbin/ldconfig
 
-
-%post -p /sbin/ldconfig
+chown :5000 /opt/dbspace
+chmod 775 /opt/dbspace
 
 %postun -p /sbin/ldconfig
 
-
-
-
-
 %files
 %defattr(-,root,root,-)
-%doc COPYING
+/opt/dbspace
 %{_libdir}/libSLP-db-util.so.0
 %{_libdir}/libSLP-db-util.so.0.1.0
 
-
 %files devel
 %defattr(-,root,root,-)
-#%{_prefix}/bin/test_db
 %{_includedir}/db-util/*.h
 %{_libdir}/pkgconfig/db-util.pc
 %{_libdir}/libSLP-db-util.so

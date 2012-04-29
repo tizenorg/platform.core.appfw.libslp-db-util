@@ -1,7 +1,7 @@
-libslp-db-util (0.1.0-45) unstable; urgency=low
+libslp-db-util (0.1.0-49) unstable; urgency=low
 
   * Initial Release.
   * Git: pkgs/l/libslp-db-util
-  * Tag: libslp-db-util_0.1.0-45
+  * Tag: libslp-db-util_0.1.0-49
 
  -- Hyungdeuk Kim <hd3.kim@samsung.com>  Wed, 07 Dec 2011 14:40:37 +0900
