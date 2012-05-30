@@ -5,6 +5,7 @@ Release:    49
 Group:      TO_BE/FILLED_IN
 License:    Apache License, Version 2.0
 Source0:    libslp-db-util-%{version}.tar.gz
+Source1001: packaging/libslp-db-util.manifest 
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  cmake
@@ -26,6 +27,7 @@ Requires:   pkgconfig(sqlite3)
 %setup -q -n %{name}-%{version}
 
 %build
+cp %{SOURCE1001} .
 cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix}
 
 make %{?jobs:-j%jobs}
@@ -47,12 +49,14 @@ chmod 775 /opt/dbspace
 %postun -p /sbin/ldconfig
 
 %files
+%manifest libslp-db-util.manifest
 %defattr(-,root,root,-)
 /opt/dbspace
 %{_libdir}/libSLP-db-util.so.0
 %{_libdir}/libSLP-db-util.so.0.1.0
 
 %files devel
+%manifest libslp-db-util.manifest
 %defattr(-,root,root,-)
 %{_includedir}/db-util/*.h
 %{_libdir}/pkgconfig/db-util.pc
