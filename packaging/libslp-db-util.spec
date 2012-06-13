@@ -40,18 +40,14 @@ if [ ! -d %{buildroot}/opt/dbspace ]; then
         mkdir -p %{buildroot}/opt/dbspace
 fi
 
-%post
-/sbin/ldconfig
-
-chown :5000 /opt/dbspace
-chmod 775 /opt/dbspace
+%post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
 %files
 %manifest libslp-db-util.manifest
 %defattr(-,root,root,-)
-/opt/dbspace
+%attr(775,root,app) /opt/dbspace
 %{_libdir}/libSLP-db-util.so.0
 %{_libdir}/libSLP-db-util.so.0.1.0
 
