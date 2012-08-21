@@ -1,24 +1,24 @@
 Name:       libslp-db-util
 Summary:    DB Utility
-Version:    0.1.0
-Release:    49
-Group:      TO_BE/FILLED_IN
+Version:    0.1.1
+Release:    0
+Group:      System/Libraries
 License:    Apache License, Version 2.0
-Source0:    libslp-db-util-%{version}.tar.gz
+Source0:    %{name}-%{version}.tar.gz
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(sqlite3)
 BuildRequires:  pkgconfig(dlog)
+BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:  pkgconfig(icu-i18n)
 
 %description
-libslp-db-util-dev package
 
 %package devel
 Summary:    Devel package for libslp-db-util (devel)
 Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
-Requires:   pkgconfig(sqlite3)
 
 %description devel
 
@@ -34,13 +34,12 @@ make %{?jobs:-j%jobs}
 rm -rf %{buildroot}
 %make_install
 
-if [ ! -d %{buildroot}/opt/dbspace ]; then
-        mkdir -p %{buildroot}/opt/dbspace
-fi
-
 %post
 /sbin/ldconfig
-
+if [ ! -d /opt/dbspace ]
+then
+        mkdir -p /opt/dbspace
+fi
 chown :5000 /opt/dbspace
 chmod 775 /opt/dbspace
 
@@ -48,7 +47,7 @@ chmod 775 /opt/dbspace
 
 %files
 %defattr(-,root,root,-)
-/opt/dbspace
+%{_libdir}/libSLP-db-util.so
 %{_libdir}/libSLP-db-util.so.0
 %{_libdir}/libSLP-db-util.so.0.1.0
 
@@ -56,5 +55,4 @@ chmod 775 /opt/dbspace
 %defattr(-,root,root,-)
 %{_includedir}/db-util/*.h
 %{_libdir}/pkgconfig/db-util.pc
-%{_libdir}/libSLP-db-util.so
 

@@ -19,14 +19,11 @@
  *
  */
 
-#ifndef __DBUTIL_DEBUG_H_
-#define __DBUTIL_DEBUG_H_
+#ifndef __DB_UTIL_DEBUG_H_
+#define __DB_UTIL_DEBUG_H_
 #include <stdio.h>
 
-#define DBUTIL_USING_PLATFORM_DBG
-#define DBUTIL_ENABLE_TRACE
-
-#ifdef DBUTIL_USING_PLATFORM_DBG
+#ifdef DB_UTIL_USING_PLATFORM_DBG
 	#include <dlog.h>
 	#ifdef LOG_TAG
 		#undef LOG_TAG
@@ -34,27 +31,27 @@
 	#define LOG_TAG "DBUTIL"
 #endif
 
-#ifdef DBUTIL_ENABLE_TRACE
+#ifdef DB_UTIL_ENABLE_TRACE
 
-	#ifdef DBUTIL_USING_PLATFORM_DBG
+	#ifdef DB_UTIL_USING_PLATFORM_DBG
 
-		#define DBUTIL_TRACE_DEBUG LOGD
-		#define DBUTIL_TRACE_WARNING LOGW
-		#define DBUTIL_TRACE_ERROR LOGE
+		#define DB_UTIL_TRACE_DEBUG LOGD
+		#define DB_UTIL_TRACE_WARNING LOGW
+		#define DB_UTIL_TRACE_ERROR LOGE
 
 	#else
 
-		#define DBUTIL_TRACE_DEBUG(fmt, arg...) \
+		#define DB_UTIL_TRACE_DEBUG(fmt, arg...) \
 			do {\
 				fprintf(stderr,"[DBUTIL]\033[0;32mDEBUG: " fmt "\033[0m\t%s:%d\n", ##arg, strrchr(__FILE__, '/')+1, __LINE__);\
 			}while(0);
 
-		#define DBUTIL_TRACE_WARNING(fmt, arg...) \
+		#define DB_UTIL_TRACE_WARNING(fmt, arg...) \
 			do {\
 				fprintf(stderr,"[DBUTIL]\033[0;33mWARRING: " fmt "\033[0m\t%s:%d\n", ##arg, strrchr(__FILE__, '/')+1, __LINE__);\
 			}while(0);
 
-		#define DBUTIL_TRACE_ERROR(fmt, arg...) \
+		#define DB_UTIL_TRACE_ERROR(fmt, arg...) \
 			do {\
 				fprintf(stderr, "[DBUTIL]\033[0;31mERROR: " fmt "\033[0m\t%s:%d\n", ##arg, strrchr(__FILE__, '/')+1, __LINE__);\
 			}while(0);
@@ -63,10 +60,10 @@
 
 #else
 
-	#define DBUTIL_TRACE_DEBUG(fmt, arg...) 
-	#define DBUTIL_TRACE_WARNING(fmt, arg...)
-	#define DBUTIL_TRACE_ERROR(fmt, arg...)
-	
+	#define DB_UTIL_TRACE_DEBUG(fmt, arg...)
+	#define DB_UTIL_TRACE_WARNING(fmt, arg...)
+	#define DB_UTIL_TRACE_ERROR(fmt, arg...)
+
 #endif
-#endif /* __DBUTIL_DEBUG_H_ */
+#endif /* __DB_UTIL_DEBUG_H_ */
 

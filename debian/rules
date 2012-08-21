@@ -11,7 +11,7 @@
 
 CFLAGS ?= -Wall -g
 CXXFLAGS ?=  -Wall -g
-LDFLAGS ?= 
+LDFLAGS ?=
 PREFIX ?= /usr
 DATADIR ?= /opt
 
@@ -35,7 +35,7 @@ configure-stamp:
 
 build: build-stamp
 
-build-stamp: configure-stamp 
+build-stamp: configure-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
@@ -69,12 +69,12 @@ clean:
 		rm -f $${f%.in}; \
 	done
 
-	dh_clean 
+	dh_clean
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
+	dh_prep
 	dh_installdirs
 
 	# Add here commands to install the package into debian/wavplayer.
@@ -94,7 +94,7 @@ binary-arch: build install
 	dh_installexamples
 	dh_install --sourcedir=debian/tmp
 #	dh_installmenu
-#	dh_installdebconf	
+#	dh_installdebconf
 #	dh_installlogrotate
 #	dh_installemacsen
 #	dh_installpam
