@@ -2,8 +2,8 @@ Name:       libslp-db-util
 Summary:    DB Utility
 Version:    0.1.1
 Release:    5
-Group:      System/Libraries
-License:    Apache License, Version 2.0
+Group:      Application Framework/Database
+License:    Apache-2.0
 Source0:    %{name}-%{version}.tar.gz
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -14,19 +14,20 @@ BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(icu-i18n)
 
 %description
+DB Utility.
 
 %package devel
 Summary:    Devel package for libslp-db-util (devel)
 Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
-
 %description devel
+Devel package for libslp-db-util (devel)
 
 %prep
 %setup -q -n %{name}-%{version}
 
 %build
-cmake . -DCMAKE_INSTALL_PREFIX=%{_prefix}
+%cmake . 
 
 make %{?jobs:-j%jobs}
 
