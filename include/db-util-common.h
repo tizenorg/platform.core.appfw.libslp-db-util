@@ -27,12 +27,27 @@ extern "C" {
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <sqlite3.h>
 
 #ifndef EXPORT_API
 #define EXPORT_API __attribute__ ((visibility("default")))
 #endif
+
+#ifndef PARAM_IN
+#define PARAM_IN
+#endif
+
+#ifndef PARAM_OUT
+#define PARAM_OUT
+#endif
+
+typedef enum {
+	DB_UTIL_ERROR = SQLITE_ERROR,
+	DB_UTIL_OK = SQLITE_OK,
+} db_util_err;
+
 
 #ifdef __cplusplus
 }

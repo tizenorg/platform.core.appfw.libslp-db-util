@@ -3,19 +3,19 @@ Section: main
 Priority: optional
 Maintainer: Hyungdeuk Kim <hd3.kim@samsung.com> Hakjoo ko <hakjoo.ko@samsung.com>
 Uploaders: Hyungdeuk Kim <hd3.kim.@smasung.com> Hakjoo Ko <hakjoo.ko@samsung.com>
-Build-Depends: debhelper (>= 5), autotools-dev, libsqlite3-dev, dlog-dev
+Build-Depends: debhelper (>= 5), autotools-dev, libsqlite3-dev, dlog-dev, libglib2.0-dev, libicu-dev
 Standards-Version: 0.1.0
 
 Package: libslp-db-util-dev
 Section: main
 Architecture: any
-Depends:  ${shlibs:Depends}, ${misc:Depends}, libslp-db-util-0 (= ${Source-Version}), libsqlite3-dev, dlog-dev
+Depends:  ${shlibs:Depends}, ${misc:Depends}, libslp-db-util-0 (= ${Source-Version}), libsqlite3-dev, dlog-dev, libglib2.0-dev, libicu-dev
 Description: libslp-db-util-dev package
 
 Package: libslp-db-util-0
 Section: main
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libsqlite3-0, sqlite3, libdlog-0
+Depends: ${shlibs:Depends}, ${misc:Depends}, libsqlite3-0, sqlite3, libdlog-0, libglib2.0-0
 Description: libslp-db-util package 
 
 Package: libslp-db-util-dbg

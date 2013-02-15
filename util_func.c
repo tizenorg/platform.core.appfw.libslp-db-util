@@ -19,60 +19,88 @@
  *
  */
 
-#include <util-func.h>
 #include <string.h>
 #include <unistd.h>
 
+#include "util-func.h"
+#include "collation.h"
 #include "db-util-debug.h"
 
-#define BUFSIZE		512
-static char _szDBPath[BUFSIZE] = { 0, };
-
-static int db_util_busyhandler(void *pData, int count)
+static int __db_util_busyhandler(void *pData, int count)
 {
 	if(5 - count > 0) {
-		DBUTIL_TRACE_DEBUG("Busy Handler Called! : PID(%d) / CNT(%d)\n", getpid(), count+1);	
+		DB_UTIL_TRACE_DEBUG("Busy Handler Called! : PID(%d) / CNT(%d)\n", getpid(), count+1);
 		usleep((count+1)*100000);
 		return 1;
 	} else {
-		DBUTIL_TRACE_DEBUG("Busy Handler will be returned SQLITE_BUSY error : PID(%d) \n", getpid());
+		DB_UTIL_TRACE_DEBUG("Busy Handler will be returned SQLITE_BUSY error : PID(%d) \n", getpid());
 		return 0;
 	}
+}
+
+static int __db_util_open(sqlite3 *ppDB)
+{
+	int rc = 0;
+
+	if(ppDB == NULL) {
+		DB_UTIL_TRACE_WARNING("Invalid input param error");
+		return DB_UTIL_ERROR;
+	}
+
+	/* Register Busy handler */
+	rc = sqlite3_busy_handler(ppDB, __db_util_busyhandler, NULL);
+	if (SQLITE_OK != rc) {
+		DB_UTIL_TRACE_WARNING("Fail to register busy handler\n");
+		sqlite3_close(ppDB);
+		return rc;
+	}
+
+#ifdef SET_PERSIST_JOURNAL_MODE
+	/* Code to change default journal mode of sqlite3 is enabled so this option is disabled */
+	/* Enable persist journal mode */
+	rc = sqlite3_exec(ppDB, "PRAGMA journal_mode = PERSIST",
+			NULL, NULL, &pszErrorMsg);
+	if (SQLITE_OK != rc) {
+		DB_UTIL_TRACE_WARNING("Fail to change journal mode: %d, %d, %s, %s\n",
+								sqlite3_errcode(ppDB),
+								sqlite3_extended_errcode(ppDB),
+								pszErrorMsg,
+								sqlite3_errmsg(ppDB));
+		sqlite3_free(pszErrorMsg);
+		sqlite3_close(ppDB);
+		return rc;
+	}
+#endif
+
+	db_util_create_collation(ppDB, DB_UTIL_COL_LS_AS_CI,
+							DB_UTIL_COL_UTF8, "localized");
+#if 0
+	if (DB_UTIL_OK != rc) {
+		DB_UTIL_TRACE_WARNING("Fail to create collation");
+		return rc;
+	}
+#endif
+
+	return DB_UTIL_OK;
 }
 
 int db_util_open(const char *pszFilePath, sqlite3 **ppDB, int nOption)
 {
 	char *pszErrorMsg = NULL;
-	
-	/* Save DB Path & Option */
-	strncpy(_szDBPath, pszFilePath, strlen(pszFilePath));
-	_szDBPath[strlen(pszFilePath)] = '\0';
-	
+
+	if((pszFilePath == NULL) || (ppDB == NULL)) {
+		DB_UTIL_TRACE_WARNING("Invalid input param error");
+		return DB_UTIL_ERROR;
+	}
+
 	/* Open DB */
 	int rc = sqlite3_open(pszFilePath, ppDB);
 	if (SQLITE_OK != rc) {
 		return rc;
 	}
-	
-	/* Register Busy handler */
-	rc = sqlite3_busy_handler(*ppDB, db_util_busyhandler, NULL);
-	if (SQLITE_OK != rc) {
-		printf("Fail to register busy handler\n");
-		sqlite3_close(*ppDB);
-		return rc;
-	}
 
-#if SET_PERSIST_JOURNAL_MODE
-	/* Enable persist journal mode */
-	rc = sqlite3_exec(*ppDB, "PRAGMA journal_mode = PERSIST", 
-			NULL, NULL, &pszErrorMsg);
-	if (SQLITE_OK != rc) {
-		DBUTIL_TRACE_WARNING("Fail to change journal mode: %d, %d, %s, %s\n", sqlite3_errcode(*ppDB), sqlite3_extended_errcode(*ppDB), pszErrorMsg, sqlite3_errmsg(*ppDB));
-		sqlite3_free(pszErrorMsg);
-		sqlite3_close(*ppDB);
-		return rc;
-	}
-#endif
+	rc = __db_util_open(*ppDB);
+
 	return rc;
 }
 
@@ -80,44 +108,36 @@ int db_util_open_with_options(const char *pszFilePath, sqlite3 **ppDB,
 				int flags, const char *zVfs)
 {
 	char *pszErrorMsg = NULL;
-	
-	/* Save DB Path & Option */
-	strncpy(_szDBPath, pszFilePath, strlen(pszFilePath));
-	_szDBPath[strlen(pszFilePath)] = '\0';
-	
+
+	if((pszFilePath == NULL) || (ppDB == NULL)) {
+		DB_UTIL_TRACE_WARNING("sqlite3 handle null error");
+		return DB_UTIL_ERROR;
+	}
+
 	/* Open DB */
 	int rc = sqlite3_open_v2(pszFilePath, ppDB, flags, zVfs);
 	if (SQLITE_OK != rc) {
 		return rc;
 	}
-	
-	/* Register Busy handler */
-	rc = sqlite3_busy_handler(*ppDB, db_util_busyhandler, NULL);
-	if (SQLITE_OK != rc) {
-		printf("Fail to register busy handler\n");
-		sqlite3_close(*ppDB);
-		return rc;
-	}
-	
-#if SET_PERSIST_JOURNAL_MODE
-	/* Enable persist journal mode */
-	rc = sqlite3_exec(*ppDB, "PRAGMA journal_mode = PERSIST", 
-			NULL, NULL, &pszErrorMsg);
-	if (SQLITE_OK != rc) {
-		DBUTIL_TRACE_WARNING("Fail to change journal mode: %s\n", pszErrorMsg);
-		sqlite3_free(pszErrorMsg);
-		sqlite3_close(*ppDB);
-		return rc;
-	}
-#endif
+
+	rc = __db_util_open(*ppDB);
+
 	return rc;
 }
 
 int db_util_close(sqlite3 *ppDB)
 {
+	char *pszErrorMsg = NULL;
+
 	/* Close DB */
 	int rc = sqlite3_close(ppDB);
-	return rc;
+	if (SQLITE_OK != rc) {
+		DB_UTIL_TRACE_WARNING("Fail to change journal mode: %s\n", pszErrorMsg);
+		sqlite3_free(pszErrorMsg);
+		return rc;
+	}
+
+	return DB_UTIL_OK;
 }
 
 
