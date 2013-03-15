@@ -34,7 +34,7 @@ make %{?jobs:-j%jobs}
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/share/license
-install LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
+install LICENSE %{buildroot}/usr/share/license/%{name}
 
 %post
 /sbin/ldconfig
