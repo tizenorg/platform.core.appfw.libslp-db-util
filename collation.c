@@ -302,7 +302,7 @@ static int __db_util_collate_icu_8_lc(void *ucol, int str1_len, const void *str1
 	char* str_from = (char*)str1;
 	char* str_to = (char*)str1;
 	glong v1_char_len, v2_char_len;
-	int ret, i;
+	int i;
 
 #ifdef DB_UTIL_ENABLE_DEVDEBUG
 	DB_UTIL_TRACE_DEBUG("__db_util_collate_icu_8_lc func start \n");
@@ -472,7 +472,6 @@ int db_util_create_collation(
 {
 	int ret = DB_UTIL_OK;
 	UErrorCode status = U_ZERO_ERROR;
-	char *dl_error = NULL;
 	const char* locale = NULL;
 
 	DB_UTIL_TRACE_DEBUG("db_util_create_collation start");
