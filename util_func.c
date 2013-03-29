@@ -40,9 +40,11 @@ static int __db_util_busyhandler(void *pData, int count)
 
 void __db_util_collation_cb(void* pArg, sqlite3* pDB, int eTextRep, const char* szName)
 {
-	if (eTextRep == SQLITE_UTF8 && !strcmp(szName, "localized"))
+	if (eTextRep == SQLITE_UTF8 && !sqlite3_stricmp(szName, "localized"))
 		db_util_create_collation(pDB, DB_UTIL_COL_LS_AS_CI,
 								DB_UTIL_COL_UTF8, "localized");
+	else
+		DB_UTIL_TRACE_WARNING("No matching collator for %s", szName);
 }
 
 static int __db_util_open(sqlite3 *pDB)

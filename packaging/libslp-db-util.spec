@@ -1,7 +1,7 @@
 Name:       libslp-db-util
 Summary:    DB Utility
 Version:    0.1.1
-Release:    4
+Release:    5
 Group:      System/Libraries
 License:    Apache License, Version 2.0
 Source0:    %{name}-%{version}.tar.gz
