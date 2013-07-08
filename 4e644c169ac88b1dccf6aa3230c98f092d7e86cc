@@ -1,0 +1,8 @@
+Change-Id: I4e644c169ac88b1dccf6aa3230c98f092d7e86cc
+Code-Review+2: Ryan Ware <ware@linux.intel.com>
+Verified+1: Ryan Ware <ware@linux.intel.com>
+Submitted-by: Ryan Ware <ware@linux.intel.com>
+Submitted-at: Mon, 08 Jul 2013 10:07:28 -0700
+Reviewed-on: https://review.tizen.org/gerrit/4466
+Project: platform/core/appfw/libslp-db-util
+Branch: refs/heads/tizen
