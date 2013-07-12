@@ -5,7 +5,7 @@ License:        Apache-2.0
 Summary:        DB Utility
 Group:          Application Framework/Database
 Source0:        %{name}-%{version}.tar.gz
-Source1001: 	libslp-db-util.manifest
+Source1001: %{name}.manifest
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
