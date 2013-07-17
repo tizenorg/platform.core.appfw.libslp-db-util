@@ -5,7 +5,8 @@ License:        Apache-2.0
 Summary:        DB Utility
 Group:          Application Framework/Database
 Source0:        %{name}-%{version}.tar.gz
-Source1001: 	libslp-db-util.manifest
+Source1001:	%{name}.manifest
+Source1002:	%{name}-devel.manifest
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(glib-2.0)
@@ -23,7 +24,7 @@ Devel package for libslp-db-util (devel)
 
 %prep
 %setup -q
-cp %{SOURCE1001} .
+cp %{SOURCE1001} %{SOURCE1002} .
 
 %build
 %cmake .
@@ -44,7 +45,7 @@ make %{?_smp_mflags}
 %{_libdir}/libSLP-db-util.so.0.1.0
 
 %files devel
-%manifest %{name}.manifest
+%manifest %{name}-devel.manifest
 %defattr(-,root,root,-)
 %dir %{_includedir}/db-util
 %{_includedir}/db-util/*.h
