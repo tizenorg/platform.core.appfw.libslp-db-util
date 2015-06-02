@@ -19,6 +19,10 @@ DB Utility.
 %package devel
 Summary:        Devel package for libslp-db-util (devel)
 Requires:       %{name} = %{version}
+Requires:       pkgconfig(dlog)
+Requires:       pkgconfig(glib-2.0)
+Requires:       pkgconfig(icu-i18n)
+Requires:       pkgconfig(sqlite3)
 %description devel
 Devel package for libslp-db-util (devel)
 
