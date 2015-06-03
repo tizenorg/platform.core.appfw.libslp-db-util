@@ -8,6 +8,6 @@ includedir=@INCLUDEDIR@
 Name: db-util
 Description: DB Utility
 Version: @VERSION@
-Requires: sqlite3 dlog glib-2.0 icu-i18n
+Requires.private: sqlite3 dlog glib-2.0 icu-i18n
 Libs: -L${libdir} -lSLP-db-util
 Cflags: -I${includedir}
